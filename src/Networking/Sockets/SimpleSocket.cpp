@@ -28,7 +28,6 @@ void RAR::SimpleSocket::test_connection(int item_to_test)
 }
 
 // Getter functions
-
 struct sockaddr_in RAR::SimpleSocket::get_address()
 {
     return address;
@@ -37,15 +36,4 @@ struct sockaddr_in RAR::SimpleSocket::get_address()
 int RAR::SimpleSocket::get_sock()
 {
     return sock;
-}
-
-int RAR::SimpleSocket::get_connection()
-{
-    return connection;
-}
-
-// Setting functions
-void RAR::SimpleSocket::set_connection(int con)
-{
-    connection = con;
 }

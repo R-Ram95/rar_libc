@@ -6,10 +6,17 @@ namespace RAR
     // Server side socket
     class BindingSocket : public SimpleSocket
     {
+    private:
+        // Stores 0 if binding is successful
+        int binding;
+        // Virtual function from parent
+        void connect_to_network(int sock, struct sockaddr_in address);
+
     public:
         // Constructor
         BindingSocket(int domain, int service, int protocol, int port, u_long interface);
-        // Virtual function from parent
-        int connect_to_network(int sock, struct sockaddr_in address);
+
+        // Getters
+        int get_binding();
     };
 }
