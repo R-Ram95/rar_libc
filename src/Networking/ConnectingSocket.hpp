@@ -3,13 +3,13 @@
 
 namespace RAR
 {
-    // Server side socket
-    class BindingSocket : public SimpleSocket
+    // Client side socket
+    class ConnectingSocket : public SimpleSocket
     {
     public:
         // Constructor
-        BindingSocket(int domain, int service, int protocol, int port, u_long interface);
+        ConnectingSocket(int domain, int service, int protocol, int port, u_long interface);
         // Virtual function from parent
         int connect_to_network(int sock, struct sockaddr_in address);
     };
-}
+};
