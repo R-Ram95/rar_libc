@@ -12,9 +12,6 @@ RAR::SimpleSocket::SimpleSocket(int domain, int service, int protocol, int port,
     // Establish socket
     sock = socket(domain, service, protocol);
     test_connection(sock);
-    // Connect socket to host device
-    connection = connect_to_network(sock, address);
-    test_connection(connection);
 }
 
 // Test connection virtual function
@@ -45,4 +42,10 @@ int RAR::SimpleSocket::get_sock()
 int RAR::SimpleSocket::get_connection()
 {
     return connection;
+}
+
+// Setting functions
+void RAR::SimpleSocket::set_connection(int con)
+{
+    connection = con;
 }

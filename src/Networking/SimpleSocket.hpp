@@ -17,14 +17,19 @@ namespace RAR
 
    public:
       SimpleSocket(int domain, int service, int protocol, int port, u_long interface);
+
       // function to connect to a network
       virtual int connect_to_network(int sock, struct sockaddr_in address) = 0;
       // function to test sockets and connections
       void test_connection(int);
+
       // Getter functions
       struct sockaddr_in get_address();
       int get_sock();
       int get_connection();
+
+      // Setting Functions
+      void set_connection(int con);
    };
 }
 
