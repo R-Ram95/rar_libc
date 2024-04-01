@@ -3,20 +3,22 @@
 
 namespace RAR
 {
-    // Client side socket
+    /**
+     * Definition for a Client side socket
+     */
     class ConnectingSocket : public SimpleSocket
     {
     private:
         // Stores 0 if connection is successful
         int connection;
-        // Virtual function from parent
+        // Opens a connection on the provided socket
         void connect_to_network(int sock, struct sockaddr_in address);
 
     public:
-        // Constructor
+        /* CONSTRUCTORS */
         ConnectingSocket(int domain, int service, int protocol, int port, u_long interface);
 
-        // Getters
+        /* GETTERS */
         int get_connection();
     };
 };

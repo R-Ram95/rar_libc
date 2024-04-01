@@ -15,14 +15,18 @@ namespace RAR
       int sock;
 
    public:
+      /* CONSTRUCTORS */
       SimpleSocket(int domain, int service, int protocol, int port, u_long interface);
 
-      // function to connect to a network
+      /* VIRTUAL FUNCTIONS */
+      // This function connects to the networking using bind(), connect(), or listen() from sys/socket.h
       virtual void connect_to_network(int sock, struct sockaddr_in address) = 0;
-      // function to test sockets and connections
+
+      /* TESTERS */
+      // This function ends the program if the connection is not properly established.
       void test_connection(int);
 
-      // Getter functions
+      /* GETTERS */
       struct sockaddr_in get_address();
       int get_sock();
    };

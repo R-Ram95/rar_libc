@@ -1,7 +1,7 @@
 # RARLIBC
 
-- A c++ library
+- My C++ Library
 
 ## Networking
 
-- Socket object definition
+- Classes that leverage Unix System calls to build networking components, e.g. an HTTP Web Server

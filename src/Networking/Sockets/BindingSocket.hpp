@@ -3,7 +3,9 @@
 
 namespace RAR
 {
-    // Server side socket
+    /**
+     * Definition for a server side socket
+     */
     class BindingSocket : public SimpleSocket
     {
     private:
@@ -13,10 +15,10 @@ namespace RAR
         void connect_to_network(int sock, struct sockaddr_in address);
 
     public:
-        // Constructor
+        /* CONSTRUCTORS */
         BindingSocket(int domain, int service, int protocol, int port, u_long interface);
 
-        // Getters
+        /* CONSTRUCTORS */
         int get_binding();
     };
 }
