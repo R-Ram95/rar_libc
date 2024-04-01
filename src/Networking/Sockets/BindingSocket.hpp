@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "SimpleSocket.hpp"
+#ifndef BindingSocket_hpp
+#define BindingSocket_hpp
 
 namespace RAR
 {
@@ -22,3 +24,5 @@ namespace RAR
         int get_binding();
     };
 }
+
+#endif /* BindingSocket_hpp*/
