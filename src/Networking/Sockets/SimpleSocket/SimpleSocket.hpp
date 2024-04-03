@@ -8,12 +8,17 @@
 
 namespace RAR
 {
+   /**
+    * @brief A thin wrapper around the socket from sys/socket.h
+    *
+    */
    class SimpleSocket
    {
    private:
-      // the address of the socket - see netinet/in.h for options
+      // the transport address of the socket - see netinet/in.h for options
       struct sockaddr_in address;
-      //
+
+      // the socket to create
       int sock;
 
    public:
@@ -24,14 +29,37 @@ namespace RAR
        * @param domain - communication domain in which socket should be created, see sys/socket.h for more details
        * @param service - type of socket to be created, see sys/socket.h for more detals
        * @param protocol  - protocol to be used with the docket
+       */
+      SimpleSocket(int domain, int service, int protocol);
+
+      /* VIRTUAL FUNCTIONS */
+      /**
+       * @brief - Assign a transport address to the socket and connects the socket to the address
+       *
+       * @param domain - communication domain in which socket should be created, see sys/socket.h for more details
        * @param port  - transport address to be used for defining the address family when the socket is named and used in binding, connecting, or listening
        * @param interface - the address of the socket, i.e. the ip of the hosts networking device
        */
-      SimpleSocket(int domain, int service, int protocol, int port, u_long interface);
+      virtual void assign_address(int domain, int port, u_long interface) = 0;
 
-      /* VIRTUAL FUNCTIONS */
-      // This function connects to the networking using bind(), connect(), or listen() from sys/socket.h
-      virtual void connect_to_network(int sock, struct sockaddr_in address) = 0;
+      /**
+       * @brief - Wait for incoming connections on a socket
+       *
+       * @param bklg - number of connection requests to queue
+       */
+      virtual void listen_on_socket(int bklg) = 0;
+
+      /**
+       * @brief - get the first connection request from a que
+       *
+       */
+      virtual int accept_connection() = 0;
+
+      // /**
+      //  * @brief TODO client side
+      //  *
+      //  */
+      // virtual void connect_socket();
 
       /* TESTERS */
       // This function ends the program if the connection is not properly established.
@@ -40,6 +68,9 @@ namespace RAR
       /* GETTERS */
       struct sockaddr_in get_address();
       int get_sock();
+
+      /* SETTERS */
+      void set_address(struct sockaddr_in addr);
    };
 }
 
