@@ -47,19 +47,19 @@ namespace RAR
        *
        * @param bklg - number of connection requests to queue
        */
-      virtual void listen_on_socket(int bklg);
+      virtual void listen_on_socket(int bklg) = 0;
 
       /**
        * @brief - get the first connection request from a que
        *
        */
-      virtual void accept_connection();
+      virtual void accept_connection() = 0;
 
-      /**
-       * @brief TODO client side
-       *
-       */
-      virtual void connect_socket();
+      // /**
+      //  * @brief TODO client side
+      //  *
+      //  */
+      // virtual void connect_socket();
 
       /* TESTERS */
       // This function ends the program if the connection is not properly established.

@@ -5,8 +5,8 @@ RAR::ServerSocket::ServerSocket(int domain, int service, int protocol) : SimpleS
 
 void RAR::ServerSocket::assign_address(int domain, int port, u_long interface)
 {
-    struct sockaddr_in address = SimpleSocket::get_address();
-    int sock = SimpleSocket::get_sock();
+    struct sockaddr_in address = get_address();
+    int sock = get_sock();
 
     // configure address
     address.sin_family = domain;
@@ -17,5 +17,5 @@ void RAR::ServerSocket::assign_address(int domain, int port, u_long interface)
     int binding = bind(sock, (struct sockaddr *)&address, sizeof(address));
 
     // is the connection successful?
-    SimpleSocket::test_connection(binding);
+    test_connection(binding);
 }
