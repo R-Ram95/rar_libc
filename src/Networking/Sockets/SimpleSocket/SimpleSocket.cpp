@@ -31,3 +31,9 @@ int RAR::SimpleSocket::get_sock()
 {
     return sock;
 }
+
+// Setter functions
+void RAR::SimpleSocket::set_address(struct sockaddr_in addr)
+{
+    address = addr;
+}

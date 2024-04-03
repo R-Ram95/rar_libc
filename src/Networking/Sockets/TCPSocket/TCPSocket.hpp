@@ -28,7 +28,7 @@ namespace RAR
          * @brief override from SimpleSocket => accepts first connection in queue
          *
          */
-        void accept_connection() override;
+        int accept_connection() override;
     };
 
 };

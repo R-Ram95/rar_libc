@@ -10,8 +10,13 @@ RAR::TestServer::TestServer()
 
 void RAR::TestServer::accepter()
 {
-    tcp_socket->accept_connection();
-    int reading = read(new_socket, buffer, 30000);
+    new_socket = tcp_socket->accept_connection();
+    int val_read = read(new_socket, buffer, 30000);
+    if (val_read < 0)
+    {
+        perror("Failed to read ...");
+        exit(EXIT_FAILURE);
+    }
 }
 
 void RAR::TestServer::handler()

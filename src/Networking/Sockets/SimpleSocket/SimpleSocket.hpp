@@ -53,7 +53,7 @@ namespace RAR
        * @brief - get the first connection request from a que
        *
        */
-      virtual void accept_connection() = 0;
+      virtual int accept_connection() = 0;
 
       // /**
       //  * @brief TODO client side
@@ -68,6 +68,9 @@ namespace RAR
       /* GETTERS */
       struct sockaddr_in get_address();
       int get_sock();
+
+      /* SETTERS */
+      void set_address(struct sockaddr_in addr);
    };
 }
 
