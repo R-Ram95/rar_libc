@@ -3,8 +3,7 @@
 
 #include "SimpleSocket.hpp"
 
-#include "BindingSocket.hpp"
-#include "ListeningSocket.hpp"
+#include "ServerSocket.hpp"
+#include "TCPSocket.hpp"
 
-#include "ConnectingSocket.hpp"
 #endif /* rarlibc_sockets_hpp*/

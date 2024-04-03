@@ -1,21 +1,15 @@
 #include "SimpleSocket.hpp"
 
-// Default Constructor
-
-RAR::SimpleSocket::SimpleSocket(int domain, int service, int protocol, int port, u_long interface)
+// Constructor
+RAR::SimpleSocket::SimpleSocket(int domain, int service, int protocol)
 {
-    // Defined address structure
-    address.sin_family = domain;
-    address.sin_port = htons(port);
-    address.sin_addr.s_addr = htonl(interface);
 
     // Establish socket
     sock = socket(domain, service, protocol);
     test_connection(sock);
 }
 
-// Test connection virtual function
-
+// Make sure the connection (socket, bind, listen, accept, etc.) is successful
 void RAR::SimpleSocket::test_connection(int item_to_test)
 {
     // confirm that the socket or connection has been properly established
