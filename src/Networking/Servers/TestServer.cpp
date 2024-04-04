@@ -12,6 +12,8 @@ void RAR::TestServer::accepter()
 {
     new_socket = tcp_socket->accept_connection();
     int val_read = read(new_socket, buffer, 30000);
+
+    // failed to read bytes
     if (val_read < 0)
     {
         perror("Failed to read ...");

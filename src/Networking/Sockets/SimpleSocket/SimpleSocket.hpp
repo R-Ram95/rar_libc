@@ -55,12 +55,6 @@ namespace RAR
        */
       virtual int accept_connection() = 0;
 
-      // /**
-      //  * @brief TODO client side
-      //  *
-      //  */
-      // virtual void connect_socket();
-
       /* TESTERS */
       // This function ends the program if the connection is not properly established.
       void test_connection(int);
