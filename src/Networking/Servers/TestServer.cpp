@@ -2,23 +2,8 @@
 
 RAR::TestServer::TestServer()
 {
-    tcp_socket = new TCPSocket(80);
-    new_socket = tcp_socket->get_sock();
-    tcp_socket->listen_on_socket(10);
+    tcp_socket = new TCPSocket(1025, 10);
     launch();
-}
-
-void RAR::TestServer::accepter()
-{
-    new_socket = tcp_socket->accept_connection();
-    int val_read = read(new_socket, buffer, 30000);
-
-    // failed to read bytes
-    if (val_read < 0)
-    {
-        perror("Failed to read ...");
-        exit(EXIT_FAILURE);
-    }
 }
 
 void RAR::TestServer::handler()
@@ -26,21 +11,17 @@ void RAR::TestServer::handler()
     std::cout << buffer << std::endl;
 }
 
-void RAR::TestServer::responder()
-{
-    const char *hello = "Hello from server";
-    int written = write(new_socket, hello, strlen(hello) + 1);
-    close(new_socket);
-}
-
 void RAR::TestServer::launch()
 {
+
+    char *hello = "Hello from server";
     while (true)
     {
         std::cout << "============ WAITING ============" << std::endl;
-        accepter();
+        std::cout << tcp_socket->receive_request() << std::endl;
         handler();
-        responder();
-        std::cout << "=========== DONE =============" << std::endl;
+        tcp_socket->send_response(hello);
+        std::cout
+            << "=========== DONE =============" << std::endl;
     }
 }

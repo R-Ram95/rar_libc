@@ -65,6 +65,7 @@ namespace RAR
 
       /* SETTERS */
       void set_address(struct sockaddr_in addr);
+      void set_sock(int sock);
    };
 }
 

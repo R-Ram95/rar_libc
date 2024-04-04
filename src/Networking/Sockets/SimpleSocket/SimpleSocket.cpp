@@ -37,3 +37,8 @@ void RAR::SimpleSocket::set_address(struct sockaddr_in addr)
 {
     address = addr;
 }
+
+void RAR::SimpleSocket::set_sock(int socket)
+{
+    sock = socket;
+}

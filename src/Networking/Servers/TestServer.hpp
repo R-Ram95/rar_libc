@@ -15,9 +15,7 @@ namespace RAR
         int new_socket;
         TCPSocket *tcp_socket;
 
-        void accepter();
         void handler();
-        void responder();
 
     public:
         TestServer();
