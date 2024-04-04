@@ -1,14 +1,13 @@
-#include "TestServer.hpp"
+#include "HTTPServer.hpp"
 
-RAR::TestServer::TestServer()
+RAR::HTTPServer::HTTPServer()
 {
     tcp_socket = new TCPSocket(80);
-    new_socket = tcp_socket->get_sock();
     tcp_socket->listen_on_socket(10);
-    launch();
+    run();
 }
 
-void RAR::TestServer::accepter()
+void RAR::HTTPServer::read_request()
 {
     new_socket = tcp_socket->accept_connection();
     int val_read = read(new_socket, buffer, 30000);
@@ -21,26 +20,28 @@ void RAR::TestServer::accepter()
     }
 }
 
-void RAR::TestServer::handler()
+void RAR::HTTPServer::handle_request()
 {
+
+    // parse the request
     std::cout << buffer << std::endl;
 }
 
-void RAR::TestServer::responder()
+void RAR::HTTPServer::send_response()
 {
     const char *hello = "Hello from server";
     int written = write(new_socket, hello, strlen(hello) + 1);
     close(new_socket);
 }
 
-void RAR::TestServer::launch()
+void RAR::HTTPServer::run()
 {
     while (true)
     {
         std::cout << "============ WAITING ============" << std::endl;
-        accepter();
-        handler();
-        responder();
+        read_request();
+        handle_request();
+        send_response();
         std::cout << "=========== DONE =============" << std::endl;
     }
 }

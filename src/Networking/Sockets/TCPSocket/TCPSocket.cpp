@@ -1,6 +1,5 @@
 #include "TCPSocket.hpp"
 
-//
 RAR::TCPSocket::TCPSocket(int port) : ServerSocket(AF_INET, SOCK_STREAM, 0)
 {
     // bind socket to address

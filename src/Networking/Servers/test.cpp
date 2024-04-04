@@ -1,8 +1,7 @@
-#include <stdio.h>
-#include "TestServer.hpp"
+#include "HTTPServer/HTTPServer.hpp"
 
 int main()
 {
-    RAR::TestServer t;
+    RAR::HTTPServer t;
     return 0;
 }
