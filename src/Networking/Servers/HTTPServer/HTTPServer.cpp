@@ -10,7 +10,8 @@ RAR::HTTPServer::HTTPServer()
 void RAR::HTTPServer::read_request()
 {
     new_socket = tcp_socket->accept_connection();
-    int val_read = read(new_socket, buffer, 30000);
+    // TODO This probably won't work, we need to initialize the size of the buffer somewhere
+    int val_read = read(new_socket, buffer.data(), buffer.size());
 
     // failed to read bytes
     if (val_read < 0)
@@ -18,13 +19,21 @@ void RAR::HTTPServer::read_request()
         perror("Failed to read ...");
         exit(EXIT_FAILURE);
     }
+
+    // TODO Build request object here
 }
 
 void RAR::HTTPServer::handle_request()
 {
 
     // parse the request
-    std::cout << buffer << std::endl;
+    std::cout << buffer.data() << std::endl;
+
+    // TODO Log the request => print to console, print to file
+
+    // TODO Build Reponse Object here based on the request object
+    // check the request method
+    // check if the file exists
 }
 
 void RAR::HTTPServer::send_response()

@@ -5,18 +5,21 @@
 #include <cstring>
 #include <unistd.h>
 #include "../../rarlibc-networking.hpp"
+#include <vector>
 
 namespace RAR
 {
     class HTTPServer
     {
     private:
-        char buffer[30000] = {0};
+        // todo, this probably won't work, we need to initialize the size of the buffer somwhere
+        std::vector<char> buffer;
         int new_socket;
         TCPSocket *tcp_socket;
 
         // TODO Create two structs:
         // 1 - Request
+        struct Request;
         // 2 - Response
 
         /**
