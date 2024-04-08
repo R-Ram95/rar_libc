@@ -1,29 +1,36 @@
 
-#include <string>
-#include <vector>
+#include <cstring>
+#include <iostream>
 
 #ifndef Request_hpp
 #define Request_hpp
 
 namespace RAR
 {
-    struct request_line
-    {
-        std::string method;
-        std::string request_uri;
-        std::string http_version;
-    };
 
     class Request
     {
     private:
-        struct request_line request_line;
-        std::string header_fields;
-        std::string body;
+        char *request_method;
+        // Request object with file path
+        char *request_uri;
+        char *http_version;
+        // body of the request, will be blank for GET
+        char *body;
+
+        // extract fields from request line
+        void parse_request_line(char *request_string);
+        void parse_request_headers(char *request_headers);
+        void parse_request_body(char *request_body);
 
     public:
-        Request();
-        void parse_request(char *buffer);
+        /* CONSTRUCTORS*/
+        Request(char *request_string);
+
+        /* GETTERS */
+        char *get_request_method();
+        char *get_request_uri();
+        char *get_http_version();
     };
 };
 
