@@ -41,6 +41,7 @@ void RAR::Request::parse_request_line(char *request_line)
 
 void RAR::Request::parse_request_headers(char *request_headers)
 {
+    // make copy because we will be tokenizing and we want to preserver the original
     char header_copy[strlen(request_headers) + 1];
     strcpy(header_copy, request_headers);
 
