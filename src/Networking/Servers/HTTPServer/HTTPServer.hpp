@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "../../rarlibc-networking.hpp"
 #include "../../Communication/Request/Request.hpp"
+#include "stdio.h"
 
 namespace RAR
 {

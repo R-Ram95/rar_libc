@@ -2,6 +2,7 @@
 
 RAR::Request::Request(char *request_string)
 {
+    request = request_string;
     // make copy because we will be tokenizing
     char request_copy[strlen(request_string) + 1];
     strcpy(request_copy, request_string);
@@ -18,14 +19,8 @@ RAR::Request::Request(char *request_string)
 
     // split up request sections
     char *request_line = strtok(request_copy, "\n");
-    char *request_headers = strtok(nullptr, "|");
-    char *body = strtok(nullptr, "|");
-
-    std::cout << "REQUEST LINE" << std::endl;
-    std::cout << request_line << std::endl;
-
-    std::cout << "REQUEST HEADER" << std::endl;
-    std::cout << request_headers << std::endl;
+    char *request_headers = strtok(NULL, "|");
+    char *body = strtok(NULL, "|");
 
     parse_request_line(request_line);
     parse_request_headers(request_headers);
@@ -41,20 +36,38 @@ void RAR::Request::parse_request_line(char *request_line)
 
 void RAR::Request::parse_request_headers(char *request_headers)
 {
-    // make copy because we will be tokenizing and we want to preserver the original
-    char header_copy[strlen(request_headers) + 1];
-    strcpy(header_copy, request_headers);
+    // first key
+    char *header_key = strtok(request_headers, ": ");
+    char *header_value = " ";
 
-    std::cout << "REQUEST HEADER in PARSE HEADERS" << std::endl;
-    std::cout << request_headers << std::endl;
+    // stop when we reach the end
+    while (header_key && header_value)
+    {
+        // next line is a new key
+        header_value = strtok(NULL, "\n");
+        // header_value would be \0 if we were at the end
+        if (header_value)
+        {
+            header_key = strtok(NULL, ": ");
 
-    std::cout << "HEADER COPY  in PARSE HEADERS" << std::endl;
-    std::cout << header_copy << std::endl;
-    // go through the request header string and make a key-value mapping of headers to values (HEADER : VALUE)
-    char *header1 = strtok(header_copy, ": ");
+            // add to map
+            request_header_map[header_key] = header_value;
+        }
+    }
+}
 
-    std::cout << "header1" << std::endl;
-    std::cout << header1 << std::endl;
-    std::cout << "request headers after" << std::endl;
-    std::cout << header_copy << std::endl;
+/** GETTERS */
+char *RAR::Request::get_request_method()
+{
+    return request_method;
+}
+
+char *RAR::Request::get_request_uri()
+{
+    return request_uri;
+}
+
+char *RAR::Request::get_request()
+{
+    return request;
 }

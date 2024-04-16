@@ -18,15 +18,16 @@ void RAR::HTTPServer::read_request()
         exit(EXIT_FAILURE);
     }
 
-    // TODO Build request object here
     RAR::Request *request = new RAR::Request(buffer);
+    std::cout << request->get_request_method() << std::endl;
+    std::cout << request->get_request_uri() << std::endl;
 }
 
 void RAR::HTTPServer::handle_request()
 {
 
     // parse the request
-    std::cout << buffer << std::endl;
+    // std::cout << buffer << std::endl;
 
     // TODO Log the request => print to console, print to file
 
