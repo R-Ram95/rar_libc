@@ -67,6 +67,12 @@ char *RAR::Request::get_request_uri()
     return request_uri;
 }
 
+char *RAR::Request::get_http_version()
+{
+    return http_version;
+}
+
+// TODO Override <<
 char *RAR::Request::get_request()
 {
     return request;

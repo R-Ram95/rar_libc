@@ -1,5 +1,7 @@
 #include "HTTPServer.hpp"
 
+char *ROOT_PATH = "serve";
+
 RAR::HTTPServer::HTTPServer()
 {
     tcp_socket = new TCPSocket(81);
@@ -18,22 +20,30 @@ void RAR::HTTPServer::read_request()
         exit(EXIT_FAILURE);
     }
 
-    RAR::Request *request = new RAR::Request(buffer);
-    std::cout << request->get_request_method() << std::endl;
-    std::cout << request->get_request_uri() << std::endl;
+    request = new RAR::Request(buffer);
 }
 
 void RAR::HTTPServer::handle_request()
 {
 
-    // parse the request
-    // std::cout << buffer << std::endl;
+    // Log Request
+    std::cout << "Logging Request ..." << std::endl;
+    std::cout << request->get_request() << std::endl;
+    response = new Response();
+    response->set_http_version(request->get_http_version());
 
-    // TODO Log the request => print to console, print to file
+    // only supports GET => if not we should return with content type and length
+    if (request->get_request_method() != "GET")
+    {
+        response->set_status_code(405);
+        response->set_status_message("Method Not Allowed");
+        // TODO set message, content type, and length
+        return;
+    }
 
-    // TODO Build Reponse Object here based on the request object
-    // check the request method
     // check if the file exists
+    // char *file_path = strcat(ROOT_PATH, request->get_request_uri());
+    // read file -> bytes
 }
 
 void RAR::HTTPServer::send_response()

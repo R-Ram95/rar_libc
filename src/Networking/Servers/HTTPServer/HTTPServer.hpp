@@ -5,24 +5,22 @@
 #include <cstring>
 #include <unistd.h>
 #include "../../rarlibc-networking.hpp"
-#include "../../Communication/Request/Request.hpp"
 #include "stdio.h"
 
 namespace RAR
 {
+
     class HTTPServer
     {
     private:
-        // TODO
         char buffer[30000] = {0};
 
         // Socket file descriptor
         int socket_fd;
         TCPSocket *tcp_socket;
 
-        // TODO Create two structs:
-        // 1 - Request
-        // 2 - Response
+        Request *request;
+        Response *response;
 
         /**
          * @brief Accepts connection on the tcp port, and parses the request into
