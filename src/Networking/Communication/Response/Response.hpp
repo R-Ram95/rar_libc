@@ -4,35 +4,31 @@
 // Content-Length - number of bytes to send
 
 // body -
-
+#include <string>
 #ifndef RESPONSE_HPP
 #define RESPONSE_HPP
 
-namespace RAR
-{
-    class Response
-    {
-    private:
-        char *http_version;
-        int status_code;
-        char *status_message;
-        char *content_type;
-        int content_length;
-        char *body;
+namespace RAR {
+class Response {
+private:
+  int status_code;
+  char *status_message;
+  char *content_type;
+  int content_length;
+  char *body;
 
-    public:
-        Response();
+public:
+  Response();
 
-        /** GETTERS */
-        char *get_response_string();
+  /** GETTERS */
+  std::string get_response_string();
 
-        /** SETTERS */
-        void set_http_version(char *);
-        void set_status_code(int);
-        void set_status_message(char *);
-        void set_content_type(char *);
-        void set_content_length(int);
-    };
+  /** SETTERS */
+  void set_status_code(int);
+  void set_status_message(char *);
+  void set_content_type(char *);
+  void set_content_length(int);
 };
+}; // namespace RAR
 
-#endif RESPONSE_HPP /* response_hpp*/
+#endif /* response_hpp*/
