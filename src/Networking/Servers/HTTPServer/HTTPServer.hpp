@@ -3,6 +3,7 @@
 #define HTTPServer_hpp
 
 #include <cstring>
+#include <fstream>
 #include <unistd.h>
 #include "../../rarlibc-networking.hpp"
 #include "stdio.h"

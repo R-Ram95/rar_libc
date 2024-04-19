@@ -11,7 +11,6 @@ namespace RAR
     class Request
     {
     private:
-        // original request string
         char *request;
         char *request_method;
         // Request object with file path
