@@ -1,9 +1,3 @@
-// Minimum requirments:
-// Response Line -  HTTP VERSION STATUS CODE STATUS MESSAGE
-// Content-Type - e.g. text/plain
-// Content-Length - number of bytes to send
-
-// body -
 #include <sstream>
 #include <string>
 
@@ -12,6 +6,10 @@
 
 namespace RAR
 {
+  /**
+   * @brief Used to construct a minimal (only what is required by the browser) HTTP response
+   *
+   */
   class Response
   {
   private:
@@ -22,6 +20,10 @@ namespace RAR
     std::ostringstream body;
 
   public:
+    /**
+     * @brief Construct a new Response object - initialized the Content-Type and Content-Length
+     *
+     */
     Response();
 
     /** GETTERS */
@@ -32,6 +34,11 @@ namespace RAR
     void set_status_code(int);
     void set_status_message(std::string);
     void set_content_type(std::string);
+    /**
+     * @brief updates the length (in bytes) of the body - this is used by the browser to
+     * determines how many bytes the download
+     *
+     */
     void update_content_length(int);
     void add_to_body(std::string);
   };

@@ -11,22 +11,25 @@ RAR::HTTPServer::HTTPServer()
 
 void RAR::HTTPServer::read_request()
 {
+  // accept connection and read data into buffer
   socket_fd = tcp_socket->accept_connection();
   int bytes_read = read(socket_fd, buffer, sizeof(buffer));
 
+  // we have failed to read
   if (bytes_read < 0)
   {
     perror("Failed to read ...");
     exit(EXIT_FAILURE);
   }
 
+  // read is successful, make request
   request = new RAR::Request(buffer);
 }
 
 void RAR::HTTPServer::handle_request()
 {
 
-  // Log Request
+  // Log Request - TODO Add Logging method in server
   std::cout << "Logging Request ..." << std::endl;
   std::cout << request->get_request() << std::endl;
 
@@ -37,9 +40,6 @@ void RAR::HTTPServer::handle_request()
   {
     response->set_status_code(405);
     response->set_status_message("Method Not Allowed");
-
-    std::cout << "RESPONSE OBJECT - POSTMAN" << std::endl;
-    std::cout << response->get_response() << std::endl;
     return;
   }
 
@@ -71,10 +71,12 @@ void RAR::HTTPServer::handle_request()
 
 void RAR::HTTPServer::send_response()
 {
-  // const char *hello = "Hello from server";
-  std::cout << response->get_response().c_str() << std::endl;
   int written = write(socket_fd, response->get_response().c_str(), response->get_response_length());
   close(socket_fd);
+
+  // Log Response
+  std::cout << "Logging response ..." << std::endl;
+  std::cout << response->get_response().c_str() << std::endl;
 }
 
 void RAR::HTTPServer::run()

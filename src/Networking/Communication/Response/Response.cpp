@@ -36,7 +36,7 @@ void RAR::Response::set_status_message(std::string message)
 
 void RAR::Response::set_content_type(std::string type) { content_type = type; }
 
-void RAR::Response::update_content_length(int length) { content_length += length; }
+void RAR::Response::update_content_length(int bytes) { content_length += bytes; }
 
 void RAR::Response::add_to_body(std::string line)
 {
