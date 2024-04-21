@@ -24,73 +24,35 @@ void RAR::HTTPServer::read_request()
   }
 
   std::string requestString(buffer, bytes_read);
-
-  // read is successful, make request
   request = new RAR::Request(requestString);
 }
 
 void RAR::HTTPServer::handle_request()
 {
-
-  // Log Request - TODO Add Logging method in server
-  std::cout << "Logging Request ..." << std::endl;
-  std::cout << request->get_request() << std::endl;
-
+  log_request();
   response = new Response();
 
   // Only GET is supported strcmp returns 0 (falsy) if strings are equal
-  if (request->get_request_method() != "GET")
+  if (!is_method_supported(request->get_request_method()))
   {
-    response->set_status_code(405);
-    response->set_status_message("Method Not Allowed");
+    response->set_response_status(405, "Method Not Allowed");
     return;
   }
 
-  // file path
-  std::string file_path = ROOT_PATH;
-  std::string requested_object = DEFAULT_ROOT_OBJECT;
+  std::string file_path = construct_file_path(request->get_request_uri());
+  std::cout << file_path << std::endl;
 
-  if (request->get_request_uri() == "/")
+  if (!serve_file(file_path))
   {
-    requested_object = "/" + DEFAULT_ROOT_OBJECT;
+    response->set_response_status(404, "Not Found");
   }
-
-  std::cout << "FILE PATH" << std::endl;
-  std::cout << file_path + requested_object << std::endl;
-
-  // open file
-  std::ifstream file(ROOT_PATH + requested_object);
-
-  // could not find file
-  if (!file.is_open())
-  {
-    // TODO add 404 and not found
-    std::cout << "COULD NOT FIND FILE" << std::endl;
-    return;
-  }
-
-  response->set_status_code(200);
-  response->set_status_message("OK");
-
-  std::string line;
-  // file exists and is open
-  while (std::getline(file, line))
-  {
-    response->add_to_body(line);
-    response->update_content_length(line.length());
-  }
-
-  file.close();
 }
 
 void RAR::HTTPServer::send_response()
 {
   int written = write(socket_fd, response->get_response().c_str(), response->get_response_length());
   close(socket_fd);
-
-  // Log Response
-  std::cout << "Logging response ..." << std::endl;
-  std::cout << response->get_response().c_str() << std::endl;
+  log_response();
 }
 
 void RAR::HTTPServer::run()
@@ -103,4 +65,58 @@ void RAR::HTTPServer::run()
     send_response();
     std::cout << "=========== DONE =============" << std::endl;
   }
+}
+
+/** HELPERS */
+void RAR::HTTPServer::log_request()
+{
+
+  std::cout << "Logging Request ..." << std::endl;
+  std::cout << request->get_request() << std::endl;
+}
+
+void RAR::HTTPServer::log_response()
+{
+  std::cout << "Logging response ..." << std::endl;
+  std::cout << response->get_response() << std::endl;
+}
+
+std::string RAR::HTTPServer::construct_file_path(const std::string &file_name)
+{
+  std::string file_path = ROOT_PATH;
+  if (request->get_request_uri() == "/")
+  {
+    file_path += "/" + DEFAULT_ROOT_OBJECT;
+  }
+  else
+  {
+    file_path += request->get_request_uri();
+  }
+  return file_path;
+}
+
+bool RAR::HTTPServer::is_method_supported(const std::string &method)
+{
+  return method == "GET";
+}
+
+bool RAR::HTTPServer::serve_file(const std::string &file_path)
+{
+  std::ifstream file(file_path);
+  // could not find file
+  if (!file.is_open())
+  {
+    // TODO Log Error
+    return false;
+  }
+
+  std::string line;
+  while (std::getline(file, line))
+  {
+    response->add_to_body(line);
+    response->update_content_length(line.length());
+  }
+
+  file.close();
+  return true;
 }

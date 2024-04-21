@@ -42,6 +42,13 @@ namespace RAR
          */
         void send_response();
 
+        /** HELPERS */
+        void log_request();
+        void log_response();
+        std::string construct_file_path(const std::string &file_name);
+        bool is_method_supported(const std::string &method);
+        bool serve_file(const std::string &file_path);
+
     public:
         HTTPServer();
         void run();
