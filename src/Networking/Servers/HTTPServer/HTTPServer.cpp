@@ -1,6 +1,7 @@
 #include "HTTPServer.hpp"
 
-char *ROOT_PATH = "serve";
+const std::string ROOT_PATH = "serve";
+const std::string DEFAULT_ROOT_OBJECT = "index.html";
 
 RAR::HTTPServer::HTTPServer()
 {
@@ -22,8 +23,10 @@ void RAR::HTTPServer::read_request()
     exit(EXIT_FAILURE);
   }
 
+  std::string requestString(buffer, bytes_read);
+
   // read is successful, make request
-  request = new RAR::Request(buffer);
+  request = new RAR::Request(requestString);
 }
 
 void RAR::HTTPServer::handle_request()
@@ -36,7 +39,7 @@ void RAR::HTTPServer::handle_request()
   response = new Response();
 
   // Only GET is supported strcmp returns 0 (falsy) if strings are equal
-  if (request->get_request() == "GET")
+  if (request->get_request_method() != "GET")
   {
     response->set_status_code(405);
     response->set_status_message("Method Not Allowed");
@@ -44,12 +47,19 @@ void RAR::HTTPServer::handle_request()
   }
 
   // file path
-  // char *file_path = std::strcat(ROOT_PATH, request->get_request_uri());
-  // std::cout << "FILE PATH" << std::endl;
-  // std::cout << file_path << std::endl;
+  std::string file_path = ROOT_PATH;
+  std::string requested_object = DEFAULT_ROOT_OBJECT;
+
+  if (request->get_request_uri() == "/")
+  {
+    requested_object = "/" + DEFAULT_ROOT_OBJECT;
+  }
+
+  std::cout << "FILE PATH" << std::endl;
+  std::cout << file_path + requested_object << std::endl;
 
   // open file
-  std::ifstream file("index.html");
+  std::ifstream file(ROOT_PATH + requested_object);
 
   // could not find file
   if (!file.is_open())
@@ -59,6 +69,9 @@ void RAR::HTTPServer::handle_request()
     return;
   }
 
+  response->set_status_code(200);
+  response->set_status_message("OK");
+
   std::string line;
   // file exists and is open
   while (std::getline(file, line))
@@ -66,6 +79,7 @@ void RAR::HTTPServer::handle_request()
     response->add_to_body(line);
     response->update_content_length(line.length());
   }
+
   file.close();
 }
 

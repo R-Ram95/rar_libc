@@ -1,6 +1,7 @@
 
-#include <cstring>
-#include <unordered_map>
+#include <string>
+#include <iostream>
+#include <vector>
 
 #ifndef Request_hpp
 #define Request_hpp
@@ -11,20 +12,21 @@ namespace RAR
     class Request
     {
     private:
-        char *request;
-        char *request_method;
-        // Request object with file path
-        char *request_uri;
-        char *http_version;
-        // body of the request, will be blank for GET
-        char *body;
-        // TODO fix naming, confusing
-        std::unordered_map<char *, char *> request_header_map;
+        std::string m_request;
+        std::string m_request_method;
+        std::string m_request_uri;
+        std::string m_http_version;
 
         // extract fields from request line
-        void parse_request_line(char *request_string);
-        void parse_request_headers(char *request_headers);
-        void parse_request_body(char *request_body);
+        /**
+         * @brief tokenizes the string and returns a vector of the tokens based on the given
+         * delimeter, TODO MOVE THIS TO A SEPARATE PART OF LIB
+         *
+         * @param delimeter
+         * @return std::vector<std::string>
+         */
+        std::vector<std::string> tokenize_string(const std::string &, char delimeter);
+        void parse_request_line(const std::string &request_line);
 
     public:
         /* CONSTRUCTORS*/
@@ -33,13 +35,13 @@ namespace RAR
          *
          * @param request_string
          */
-        Request(char *request_string);
+        Request(const std::string &request_string);
 
         /* GETTERS */
-        char *get_request_method();
-        char *get_request_uri();
-        char *get_http_version();
-        char *get_request();
+        std::string get_request_method();
+        std::string get_request_uri();
+        std::string get_http_version();
+        std::string get_request();
     };
 };
 
