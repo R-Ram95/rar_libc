@@ -32,7 +32,6 @@ void RAR::HTTPServer::handle_request()
   log_request();
   response = new Response();
 
-  // Only GET is supported strcmp returns 0 (falsy) if strings are equal
   if (!is_method_supported(request->get_request_method()))
   {
     response->set_response_status(405, "Method Not Allowed");
@@ -42,7 +41,14 @@ void RAR::HTTPServer::handle_request()
   std::string file_path = construct_file_path(request->get_request_uri());
   std::cout << file_path << std::endl;
 
-  if (!serve_file(file_path))
+  auto [content_type, file_extension] = get_mime_type_and_extension(file_path);
+
+  if (add_file_to_body(file_path, file_extension))
+  {
+    response->set_response_status(200, "OK");
+    response->set_content_type(content_type);
+  }
+  else
   {
     response->set_response_status(404, "Not Found");
   }
@@ -75,12 +81,6 @@ void RAR::HTTPServer::log_request()
   std::cout << request->get_request() << std::endl;
 }
 
-void RAR::HTTPServer::log_response()
-{
-  std::cout << "Logging response ..." << std::endl;
-  std::cout << response->get_response() << std::endl;
-}
-
 std::string RAR::HTTPServer::construct_file_path(const std::string &file_name)
 {
   std::string file_path = ROOT_PATH;
@@ -100,22 +100,70 @@ bool RAR::HTTPServer::is_method_supported(const std::string &method)
   return method == "GET";
 }
 
-bool RAR::HTTPServer::serve_file(const std::string &file_path)
+void RAR::HTTPServer::log_response()
 {
-  std::ifstream file(file_path);
-  // could not find file
+  std::cout << "Logging response ..." << std::endl;
+  std::cout << response->get_response() << std::endl;
+}
+
+std::tuple<std::string, std::string> RAR::HTTPServer::get_mime_type_and_extension(const std::string &file_name)
+{
+
+  std::string extension;
+  std::string content_type;
+
+  static std::array<std::string, 10> mime_types{".html", "text/html", ".js", "application/javascript", ".png", "image/png", ".jpeg", "image/jpeg", ".svg", "image/svg"};
+  size_t dot_position = file_name.find_last_of('.');
+
+  // didn't find dot => no extension
+  if (std::string::npos == dot_position)
+  {
+    content_type = "text/plain";
+    return {content_type, ""};
+  }
+
+  extension = file_name.substr(dot_position);
+
+  for (int i = 0; i < mime_types.size() - 1; i++)
+  {
+    if (mime_types[i] == extension)
+    {
+      // mime type is next in the array
+      content_type = mime_types[i + 1];
+      return {content_type, extension};
+    }
+  }
+
+  // did not find a valid mime type
+  return {"text/plain", ""};
+}
+
+bool RAR::HTTPServer::add_file_to_body(const std::string &file_path, const std::string &file_extension)
+{
+
+  std::ifstream file;
+
+  // check file type to see how we open it
+  if (file_extension == ".html" || file_extension == ".js")
+  {
+    file.open(file_path);
+  }
+  else
+  {
+    file.open(file_path, std::ios::binary);
+  }
+
   if (!file.is_open())
   {
     // TODO Log Error
     return false;
   }
 
-  std::string line;
-  while (std::getline(file, line))
-  {
-    response->add_to_body(line);
-    response->update_content_length(line.length());
-  }
+  // read file contents into buffer
+  std::vector<char> file_contents((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+  response->add_to_body(std::string(file_contents.begin(), file_contents.end()));
+  response->update_content_length(file_contents.size());
 
   file.close();
   return true;
