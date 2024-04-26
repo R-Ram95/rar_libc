@@ -11,7 +11,7 @@ namespace RAR
     public:
         /* CONSTRUCTOR*/
         /**
-         * @brief Construct a new TCPSocket object. Creates a ServerSocket as a byte-stream socket type ( service = SOCK_STREAM)
+         * @brief Construct a new TCPSocket object in the IPV4 domain. Creates a ServerSocket as a tcp type ( service = SOCK_STREAM)
          * and binds it to a transport address on the specifed port in the internet protocol domain (domain = AF_INET).
          * Uses the default protocol (protocol = 0)
          */
