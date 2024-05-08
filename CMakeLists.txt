@@ -12,7 +12,7 @@ file(GLOB_RECURSE LIBRARY_SOURCE_FILES "src/Networking/*.cpp")
 file(GLOB_RECURSE LIBRARY_HEADER_FILES "include/*.hpp")
 
 # Create the executable
-add_executable(${PROJECT_NAME} ${EXECUTABLE_SOURCE_FILES})
+add_executable(HTTP_SERVER_TEST ${EXECUTABLE_SOURCE_FILES})
 
 # Create the statically linked library
 add_library(${PROJECT_NAME} STATIC ${LIBRARY_SOURCE_FILES})
